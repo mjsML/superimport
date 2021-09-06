@@ -22,7 +22,7 @@ import argparse
 from glob import glob
 import importlib
 import traceback
-
+logging.basicConfig(level=logging.INFO)
 pipreqs_mapping_url="https://raw.githubusercontent.com/bndr/pipreqs/master/pipreqs/mapping"
 superimport_mappin_url="https://raw.githubusercontent.com/probml/superimport/main/superimport/mapping2"
 
@@ -217,8 +217,10 @@ gnippam = {v: k for k, v in maping.items()}  # reversing the mapping
     
     
 
-    
+logging.info("superimport done init!")
+
 imports = get_imports_depending_on_context()
+logging.info("superimport got imports depending on context!")
 # Check if each package is already installed.
 # If not, install it.
 for package,file_name in imports:
