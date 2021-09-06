@@ -9,7 +9,7 @@
 # https://stackoverflow.com/questions/52311738/get-name-from-python-file-which-called-the-import
 # https://gist.github.com/gene1wood/9472a9d0dffce1a56d6e796afc6539b8
 # https://stackoverflow.com/questions/8718885/import-module-from-string-variable
-import traceback
+
 import sys
 import subprocess
 import pkg_resources
@@ -21,7 +21,7 @@ import os
 import argparse
 from glob import glob
 import importlib
-
+import traceback
 
 pipreqs_mapping_url="https://raw.githubusercontent.com/bndr/pipreqs/master/pipreqs/mapping"
 superimport_mappin_url="https://raw.githubusercontent.com/probml/superimport/main/superimport/mapping2"
@@ -161,11 +161,12 @@ def get_imports_depending_on_context():
         try:
             frames=inspect.stack()[1:]
         except Exception as e:
+            sys.stderr.write("Error importing. Please re-run the cell.")
+            
             print(e)
-            print("="*30,"\n And here is the trace:")
-            traceback.print_exc()
-            #sys.stderr.write("Error importing. Please re-run the cell.")
-            #sys.exit()
+            print("#"*30)
+            print(traceback.print_exc())
+            sys.exit()
         for frame in frames:
             file_name=frame.filename.split("/")[-1]
             files_to_skip={'superimport.py','__init__.py','setup.py','interactiveshell.py', 'ipykernel_launcher.py', 'zmqstream.py', 'base_events.py', 'kernelbase.py', 'events.py', 'runpy.py', 'ipkernel.py', 'zmqshell.py', 'application.py', 'asyncio.py', 'stack_context.py', 'kernelapp.py'}
